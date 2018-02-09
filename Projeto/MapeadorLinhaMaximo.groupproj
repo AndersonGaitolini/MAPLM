@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{0FA43924-B46F-4097-B5F1-D2D2B6418EF3}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="NovoMapeador.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="ORM.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="NovoMapeador">
+        <MSBuild Projects="NovoMapeador.dproj"/>
+    </Target>
+    <Target Name="NovoMapeador:Clean">
+        <MSBuild Projects="NovoMapeador.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="NovoMapeador:Make">
+        <MSBuild Projects="NovoMapeador.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ORM">
+        <MSBuild Projects="ORM.dproj"/>
+    </Target>
+    <Target Name="ORM:Clean">
+        <MSBuild Projects="ORM.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ORM:Make">
+        <MSBuild Projects="ORM.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="NovoMapeador;ORM"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="NovoMapeador:Clean;ORM:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="NovoMapeador:Make;ORM:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

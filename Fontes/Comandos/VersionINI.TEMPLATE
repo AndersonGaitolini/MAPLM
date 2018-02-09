@@ -1,0 +1,10 @@
+[version]
+  // número da última revisão do "diretorio_copia_trabalho"
+  SVN_Revision='$WCREV$'                
+  // data e hora atuais, não necessariamente do SVN
+  Build_Date='$WCNOW$'   				
+  // data da última modificação feita na revisão (enviada pro servidor)
+  SVN_Revision_Date='$WCDATE$'  	   
+  SVN_RevRange='$WCRANGE$' 
+  SVN_Release='$WCMODS$'               
+  SVN_URL='$WCURL$'            

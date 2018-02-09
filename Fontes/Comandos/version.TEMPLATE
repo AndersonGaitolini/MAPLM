@@ -1,0 +1,16 @@
+unit version;
+
+interface
+
+const
+  SVN_Revision      = '$WCREV$';                // número da última revisão do "diretorio_copia_trabalho"
+  Build_Date        = '$WCNOW$';   				// data e hora atuais, não necessariamente do SVN
+  SVN_Revision_Date = '$WCDATE$';  				// data da última modificação feita na revisão (enviada pro servidor)
+  SVN_RevRange      = '$WCRANGE$'; 
+  SVN_Release       = '$WCMODS$';               // Se existem modificações pendentes, mostra a
+                                                // primeira palavra senão mostra a segunda
+  SVN_URL           = '$WCURL$';                // a URL no repositório referente ao diretório de trabalho
+
+implementation 
+
+end.

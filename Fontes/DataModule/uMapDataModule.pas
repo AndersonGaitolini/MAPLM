@@ -9,7 +9,7 @@ uses
   Data.DB, FireDAC.Phys.FBDef, FireDAC.Phys.IBBase, FireDAC.Phys.FB,
   Data.SqlExpr, IBX.IBDatabase,DaoFD, DaoIBX, FireDAC.Stan.Param, FireDAC.DatS,
   FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet, Datasnap.DBClient,
-  Datasnap.Provider;
+  Datasnap.Provider,Registry;
 
 type
   TdmMapLM = class(TDataModule)
@@ -36,13 +36,15 @@ type
     cdsMapLm_ConfigDATA_REVISAO: TDateField;
     cdsMapLm_ConfigDATA_BUILD: TDateField;
     procedure DataModuleCreate(Sender: TObject);
-    procedure cdsMapLm_ConfigAfterPost(DataSet: TDataSet);
   private
     { Private declarations }
   public
     { Public declarations }
     Dao : TDaoFD;
     DaoIBX : TDaoIBX;
+  published
+    wReg : TRegistry;
+
   end;
 
 var
@@ -53,14 +55,6 @@ implementation
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
-
-procedure TdmMapLM.cdsMapLm_ConfigAfterPost(DataSet: TDataSet);
-begin
-//
-  if DataSet.FieldByName('versao').AsInteger = 0 then
-     
-
-end;
 
 procedure TdmMapLM.DataModuleCreate(Sender: TObject);
 begin

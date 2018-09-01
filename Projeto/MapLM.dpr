@@ -1,4 +1,4 @@
-program NovoMapeador;
+program MapLM;
 
 uses
   Vcl.Forms,
@@ -28,11 +28,7 @@ uses
 
 var
  ShowResult : Byte;
- wMsg, wSenhaAtual : string;
- wTipo : integer;
-
 {$R *.res}
-
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;

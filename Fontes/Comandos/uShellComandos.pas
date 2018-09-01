@@ -65,21 +65,23 @@ begin
 end;
 
 function fAddUnidade(hWnd: HWND; pLetra, pDir: string; pLabel : string = ''):Boolean;
-var Comando : array[1..4] of PWideChar;
+var Comando : array[1..5] of PWideChar;
 begin
      Result := False;
      Comando[1] := PWideChar(wideString('/C @subst '+pLetra+DriveDelim+' /d > nul'));
      Comando[2] := PWideChar(wideString('/C @net use '+pLetra+DriveDelim+' /delete > nul'));
      Comando[3] := PWideChar(wideString('/C subst '+pLetra+DriveDelim+' '+pDir+ ' >nul'));
+     Comando[4] := PWideChar(wideString('Exit '));
      if (pLabel <> '') then
-     Comando[4] := PWideChar(wideString('LABEL '+pLetra+DriveDelim+' ' +pLabel));
+     Comando[5] := PWideChar(wideString('LABEL '+pLetra+DriveDelim+' ' +pLabel));
      //LABEL (Unidade) (Nome Desejado)
      if ShellExecuteMsg(hWnd,'Open','cmd',Comando[1],nil,0)then
        if ShellExecuteMsg(hWnd,'Open','cmd',Comando[2],nil,0) then
-         Result := ShellExecuteMsg(hWnd,'Open','cmd',Comando[3],nil,0);
+         if ShellExecuteMsg(hWnd,'Open','cmd',Comando[3],nil,0) then
+           Result := ShellExecuteMsg(hWnd,'Open','cmd',Comando[4],nil,0);
 
-//     if (pLabel <> '') then;
-        ShellExecuteMsg(hWnd,'Open','cmd',Comando[4],nil,0)
+     if (pLabel <> '') then;
+        ShellExecuteMsg(hWnd,'Open','cmd',Comando[5],nil,0)
 end;
 
 function fDelUnidade(hWnd: HWND; pLetra : string):Boolean;

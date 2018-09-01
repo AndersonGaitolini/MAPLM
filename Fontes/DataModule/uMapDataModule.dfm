@@ -5,13 +5,15 @@ object dmMapLM: TdmMapLM
   Width = 426
   object conMapLm: TFDConnection
     Params.Strings = (
-      'Database=E:\Arquivos\2_Dev\Projetos\MapNovo\MAPLM.FDB'
+      'Database=C:\Program Files (x86)\MapeadorLM\MAPLM.FDB'
       'User_Name=sysdba'
       'Password=masterkey'
       'Server=localhost'
+      'CharacterSet=WIN1252'
+      'Port=3050'
       'DriverID=FB')
-    Connected = True
     LoginPrompt = False
+    Transaction = fdtrMapLm
     Left = 19
     Top = 31
   end
@@ -25,7 +27,6 @@ object dmMapLM: TdmMapLM
     Top = 33
   end
   object qryMapLm_Config: TFDQuery
-    Active = True
     Connection = conMapLm
     Transaction = fdtrMapLm
     SQL.Strings = (
@@ -42,7 +43,6 @@ object dmMapLM: TdmMapLM
     Aggregates = <>
     Params = <>
     ProviderName = 'provMapLm_Config'
-    AfterPost = cdsMapLm_ConfigAfterPost
     Left = 236
     Top = 119
     object cdsMapLm_ConfigID: TIntegerField

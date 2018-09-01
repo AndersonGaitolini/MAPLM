@@ -33,14 +33,17 @@ object frmPricipalMapLM: TfrmPricipalMapLM
       Caption = '&Configurar'
       object edDir: TJvDirectoryEdit
         Left = 16
-        Top = 20
+        Top = 19
         Width = 278
         Height = 21
         DialogKind = dkWin32
+        ParentShowHint = False
+        ShowHint = False
         TabOrder = 0
         Text = ''
         OnChange = edDirChange
         OnClick = edDirClick
+        OnMouseEnter = edDirMouseEnter
       end
       object btn1: TBitBtn
         Left = 16
@@ -133,8 +136,6 @@ object frmPricipalMapLM: TfrmPricipalMapLM
       Caption = 'Mapear 70a'
       ImageIndex = 1
       OnShow = ts2Show
-      ExplicitLeft = 8
-      ExplicitTop = 22
       object lbBuildDateTit: TLabel
         Left = 23
         Top = 111
@@ -313,5 +314,11 @@ object frmPricipalMapLM: TfrmPricipalMapLM
     OnMinimize = appEvent1Minimize
     Left = 255
     Top = 156
+  end
+  object tmrHint: TTimer
+    Interval = 3000
+    OnTimer = tmrHintTimer
+    Left = 246
+    Top = 12
   end
 end

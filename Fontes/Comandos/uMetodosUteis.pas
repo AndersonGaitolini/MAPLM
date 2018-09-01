@@ -55,6 +55,12 @@ Const
   SERVICE_TYPE_ALL = (SERVICE_WIN32 or SERVICE_ADAPTER or SERVICE_DRIVER  or SERVICE_INTERACTIVE_PROCESS);
 
 type
+  TSessaoINI = record
+    NomeSessao: String;
+    SubSessao : array of string;
+  end;
+
+  SessoesINI =  array of TSessaoINI;
   TGenerico = 0..255;
   TSvcA = array[0..cnMaxServices] of TEnumServiceStatus;
   PSvcA = ^TSvcA;
@@ -76,7 +82,7 @@ type
   function fValidCPF(pCPF : string; pMascara: boolean=false): boolean;
   function fIsNumeric(pStr : String) : Boolean;
   procedure AddLog(pNameLog,pDirLog, aStr: string; pActiveAll: boolean = false);
-  procedure setINI(pIniFilePath, prSessao, prSubSessao: string; prValor: string = '');
+  function setINI(pIniFilePath, prSessao, prSubSessao: string; prValor: string = ''): boolean;
   function getINI(pIniFilePath, prSessao, prSubSessao: string; prValorDefault: string = ''): string;
 
   function fPingIP(pHost : String) :boolean;
@@ -128,15 +134,69 @@ type
   function fSetAtribute(pPath: string; pAtribute: Cardinal): Boolean;
   function fListaSessaoINIFile(pIniFile: string): TStringList;
 
+  function SetNameFileOnAppName(pExtensão: string; pComDiretorio: boolean = true):string;
   procedure pMsg(pStr: string);
+//  function fCriaArquivoINI(pPathFile, pSessao: String; pSubSessao: array of string): boolean;
+function fCriaArquivoINI(pPathFile: String; pSessoesINI: SessoesINI): boolean;
 
   var
    wOpe : TOperacao = opNil;
+   wSessoesINI :  SessoesINI;
 implementation
 
 uses
   uMapDataModule;
 
+//function fCriaArquivoINI(pPathFile, pSessao: String; pSubSessao: array of string): boolean;
+function fCriaArquivoINI(pPathFile: String; pSessoesINI: SessoesINI): boolean;
+var Arquivo: TStringList;
+    I,J, TotSessoes, TotSubSesoes: Integer;
+    wSessaoName : String;
+Const deAbre = '[';
+      deFecha = ']';
+      deIdem = '=';
+begin
+  Arquivo := TStringList.Create;
+  try
+    try
+      if DirectoryExists(ExtractFileDir(pPathFile)) then
+      begin
+        if (UpperCase(ExtractFileExt(pPathFile)) = '.INI') then
+        begin
+          if (FileExists(pPathFile)) then
+            Arquivo.LoadFromFile(pPathFile)
+          else
+            Arquivo.SaveToFile(pPathFile);
+        end;
+      end
+      else
+       exit;
+      
+      TotSessoes := Length(pSessoesINI);
+      for I := 0 to TotSessoes-1 do
+      begin
+        Arquivo.Add(deAbre + pSessoesINI[I].NomeSessao + deFecha);
+        TotSubSesoes := Length(pSessoesINI[I].SubSessao);
+        for J := 0 to TotSubSesoes-1 do
+         Arquivo.Add(pSessoesINI[I].SubSessao[J]+deIdem);
+      end;
+
+      Arquivo.SaveToFile(pPathFile);
+    except on E: Exception do
+    end;
+  finally
+     Arquivo.Free;
+  end;
+end;
+
+function SetNameFileOnAppName(pExtensão: string; pComDiretorio: boolean = true):string;
+begin
+  Result := '';
+  if pComDiretorio then
+    Result := ChangeFileExt(Application.ExeName, '.'+pExtensão)
+  else
+    Result := ChangeFileExt(ExtractFileName(Application.ExeName), '.'+pExtensão)
+end;
 procedure pMsg(pStr: string);
 begin
   ShowMessage(pStr);
@@ -1270,16 +1330,23 @@ begin
 
 end;
 
-procedure setINI(pIniFilePath, prSessao, prSubSessao: string; prValor: string ='');
+function setINI(pIniFilePath, prSessao, prSubSessao: string; prValor: string =''):boolean;
 var
   wINI : TIniFile;
 begin
+  Result := true;
   wINI := TIniFile.Create(pIniFilePath);
   try
     if FileExists(pIniFilePath) then
+    begin
       fCloseFile(pIniFilePath);
-
-    wINI.WriteString(prSessao, prSubSessao, prValor);
+      wINI.WriteString(prSessao, prSubSessao, prValor);
+    end
+    else
+      Result := false;
+      //      ShowMessage('Arquivo: '+  QuotedStr(ExtractFileName(pIniFilePath))+ ' Não pode ser criado');
+      
+    
   finally
     wINI.Free;
   end;

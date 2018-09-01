@@ -39,6 +39,7 @@ type
     lbSVNRelease: TLabel;
     lbSVNReleaseTit: TLabel;
     appEvent1: TApplicationEvents;
+    tmrHint: TTimer;
     procedure btn1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure edDirChange(Sender: TObject);
@@ -51,6 +52,8 @@ type
     procedure btnInfoSVNClick(Sender: TObject);
     procedure cbbSelectMap70Change(Sender: TObject);
     procedure appEvent1Minimize(Sender: TObject);
+    procedure tmrHintTimer(Sender: TObject);
+    procedure edDirMouseEnter(Sender: TObject);
   private
     { Private declarations }
     procedure pAtualizaGrid;
@@ -80,7 +83,6 @@ end;
 
 procedure TfrmPricipalMapLM.btn1Click(Sender: TObject);
 var Situacao : Integer;
-
   procedure pInserir;
   begin
     Mapconfig.Id := ObjMapLm.fNextId(Mapconfig);
@@ -120,6 +122,17 @@ begin
       Path_h_config := IncludeTrailingPathDelimiter(edDir.Text) + 'MXEMP';
       Path_m_config := IncludeTrailingPathDelimiter(edDir.Text) + 'MPDV';
       Path_u_config := IncludeTrailingPathDelimiter(edDir.Text) + 'DCU';
+    end
+    else
+    begin
+      if edDir.CanFocus then
+      begin
+        edDir.SetFocus;
+        edDir.SelStart := edDir.SelLength;
+        edDir.ShowHint := true;
+        edDir.Hint := 'Informe o diretório a ser mapeado';
+        exit;
+      end;
     end;
 
     try
@@ -279,6 +292,12 @@ begin
   end;
 end;
 
+procedure TfrmPricipalMapLM.edDirMouseEnter(Sender: TObject);
+begin
+  if edDir.ShowHint then
+    edDir.ShowHint := false;
+end;
+
 procedure TfrmPricipalMapLM.FormCreate(Sender: TObject);
 begin
   fIniTab;
@@ -361,6 +380,16 @@ begin
     end;
   finally
   end;
+end;
+
+procedure TfrmPricipalMapLM.tmrHintTimer(Sender: TObject);
+begin
+ //
+//  if Sender = TJvDirectoryEdit then
+//  begin
+//    TJvDirectoryEdit(sender).ShowHint
+//  end;
+
 end;
 
 procedure TfrmPricipalMapLM.ts2Show(Sender: TObject);
